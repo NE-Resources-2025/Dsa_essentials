@@ -43,3 +43,27 @@ Commands:
 - list_patients
 - list_doctors
 - exit
+```
+
+#### Expected Output Format
+```bash
+RRH HEALTHCARE SYSTEM (v1.0)  
+Type 'help' for commands.  
+> add_patient 101,Alice,01-01-2000,F  
+Patient added successfully!  
+> list_patients  
+ID  | Name  | DoB        | Gender  
+101 | Alice | 01-01-2000 | F  
+> exit  
+Saving data... Goodbye!  
+```
+
+#### Exam-Specific Constraints
+**Data Structures**: Use linked lists (no arrays/vectors).
+**File I/O**: Save/Load CSV files with the exact format:
+```text
+id,name,dob,gender  
+101,Alice,01-01-2000,F  
+```
+**Sorting**: Implement alphabetical sorting for list commands (e.g., bubble sort for linked lists).
+
