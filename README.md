@@ -30,10 +30,4 @@ Develop a Healthcare Management System with the following features:
 
 #### Exam-Specific Constraints
 **Data Structures**: Use linked lists (no arrays/vectors).
-**File I/O**: Save/Load CSV files with the exact format:
-```text
-id,name,dob,gender  
-101,Alice,01-01-2000,F  
-```
-**Sorting**: Implement alphabetical sorting for list commands (e.g., bubble sort for linked lists).
-
+**File I/O**: Save/Load CSV files
