@@ -208,6 +208,19 @@ void addPatient(struct Patient **head, int id, string name, string dob, string g
     newNode->gender = gender;
     newNode->next = (*head); // Point the new node to the current head
     (*head) = newNode; // Update the head to point to the new node
+
+    // Append to CSV
+    ofstream file("patients.csv", ios::app); // ios::app opens in append mode and makes sure the file is created if it doesn't exist
+    if (file.is_open())
+    {
+        file << id << "," << name << "," << dob << "," << gender << "\n";
+        file.close();
+        cout << "Patient saved to CSV!" << endl;
+    }
+    else
+    {
+        cerr << "Error: Could not open patients.csv" << endl;
+    }
 }
 
 void addDoctor(Doctor **head, int id, string name, string specialization)
@@ -218,6 +231,19 @@ void addDoctor(Doctor **head, int id, string name, string specialization)
     newNode->specialization = specialization;
     newNode->next = (*head);
     (*head) = newNode;
+
+    // Append to CSV
+    ofstream file("doctors.csv", ios::app); // ios::app opens in append mode and makes sure the file is created if it doesn't exist
+    if (file.is_open())
+    {
+        file << id << "," << name << "," << specialization << "\n";
+        file.close();
+        cout << "Doctor saved to CSV!" << endl;
+    }
+    else
+    {
+        cerr << "Error: Could not open doctors.csv" << endl;
+    }
 }
 
 void addAppointment(Appointment **head, int id, int doctor_id, int patient_id, string date)

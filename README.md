@@ -9,7 +9,6 @@ Develop a Healthcare Management System with the following features:
 ## Requirements:
 ### Command-Driven Interface
 - The program should run until the user enters `exit`.
-- Commands are case-insensitive (e.g., `ADD` or `add`).
 
 ### Core Features
 #### Add Patient:
@@ -28,35 +27,6 @@ Develop a Healthcare Management System with the following features:
 #### Save/Load Data:
 - Save all data to `patients.csv`, `doctors.csv`, and `appointments.csv` on exit.
 - Load data from these files when the program starts.
-
-### Error Handling
-If a command is invalid, display:  
-`Error: Invalid command. Type 'help' for a list of commands.`
-
-### Help Command
-**Command:** `help`  
-Displays:
-```bash
-Commands:
-- add_patient <id>,<name>,<dob>,<gender>
-- add_doctor <id>,<name>,<specialization>
-- list_patients
-- list_doctors
-- exit
-```
-
-#### Expected Output Format
-```bash
-RRH HEALTHCARE SYSTEM (v1.0)  
-Type 'help' for commands.  
-> add_patient 101,Alice,01-01-2000,F  
-Patient added successfully!  
-> list_patients  
-ID  | Name  | DoB        | Gender  
-101 | Alice | 01-01-2000 | F  
-> exit  
-Saving data... Goodbye!  
-```
 
 #### Exam-Specific Constraints
 **Data Structures**: Use linked lists (no arrays/vectors).
