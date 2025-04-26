@@ -11,18 +11,9 @@ Develop a Healthcare Management System with the following features:
 - The program should run until the user enters `exit`.
 
 ### Core Features
-#### Add Patient:
-- **Command:** `add_patient <id>,<name>,<dob>,<gender>`
-- **Example:** `add_patient 101,John Doe,12-05-1990,M`
-- **Validation:** Ensure `id` is unique and `dob` format is `DD-MM-YYYY`.
-
-#### Add Doctor:
-- **Command:** `add_doctor <id>,<name>,<specialization>`
-- **Example:** `add_doctor 201,Dr. Smith,Cardiology`
-
-#### List Records:
-- **Command:** `list_patients`, `list_doctors`, `list_appointments`
-- Display records in alphabetical order (by name).
+#### Add Patient && Add Doctor:
+- **Command:** Entering as prompted
+- **Validation:** Ensure `id` is unique and `dob` format is `DD/MM/YYYY`.
 
 #### Save/Load Data:
 - Save all data to `patients.csv`, `doctors.csv`, and `appointments.csv` on exit.
