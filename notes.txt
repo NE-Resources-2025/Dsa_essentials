@@ -1,0 +1,4 @@
+- stoi: string to int
+- ios::app: appends new data to the end of the file.
+- Unlike cout (which buffers output for efficiency), cerr is unbuffered, meaning error messages are displayed immediately, ensuring they’re not delayed or lost in case of a crash.
+- passing (const string &str) to a func ensures the OG string is the one passed rather than a copy which wld take time & memory. Adding const makes sure it comes unmodified.
