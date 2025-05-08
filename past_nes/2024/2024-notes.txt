@@ -1,0 +1,7 @@
+Ruhengeri Referal Hospital is requesting a C/C++ programmer to develop its healthcare system to manage patient's appointments using 3 linked lists. 
+The three linked lists and data for each are: -PatientsLL(patient_id INTEGER, name STRING, dob STRING, gender STRING) -DoctorsLL(doctor_id INTEGER, name STRING, specialization STRING) -Appointments(appointment_id INTEGER, patient_id INTEGER, doctor_id INTEGER, appointment_date STRING) 
+As a software engineer you are requested to develop this system for Ruhengeri Referal Hospital and you are also requested to consider these: 
+-One patient_id references only one patient , one doctor_id references only one doctor and one appointment_id references only one appointment otherwise notify the user that the given id already exists 
+-The appointment is possible only if both patient_id and doctor_id exist in PatientsLL and DoctorsLL respectively. Otherwise notify the user that one of them doesn't exist. 
+-The program will run on menus basis as follows: 
+1: register patient 2: register doctor 3: register appointment 4: display patients 5: display doctors 6: display appointments 7: Exit
