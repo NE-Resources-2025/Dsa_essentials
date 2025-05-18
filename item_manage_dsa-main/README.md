@@ -89,9 +89,6 @@ Make sure the program has appropriate read/write permissions in the directory wh
 - Add data validation for item IDs and quantities
 - Implement user authentication
 
-## Author
-
-Developed by Remy Tresor - RCA
 
 ## License
 
