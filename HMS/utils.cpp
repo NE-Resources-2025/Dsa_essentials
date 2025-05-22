@@ -49,7 +49,7 @@ public:
      */
     static bool isValidHospitalId(const string& id) {
         if (id.empty()) return false;
-        return id[0] == 'H' && id.length() >= 2;
+        return id[0] == 'H' && id.length() >= 2; // starts with an H and has something else after it
     }
     
     static bool isValidDistance(double distance) {

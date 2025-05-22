@@ -432,7 +432,6 @@ public:
         hospitals["H1"] = Hospital("Central Hospital", "Downtown", 150);
         hospitals["H2"] = Hospital("East Medical Center", "East District", 200);
         hospitals["H3"] = Hospital("South General Hospital", "South Area", 180);
-        hospitals["H4"] = Hospital("West Regional Hospital", "West Side", 120);
 
         connections.push_back(Connection("H1", "H2", 5.0));
         connections.push_back(Connection("H1", "H4", 3.0));
