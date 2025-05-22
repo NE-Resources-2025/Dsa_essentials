@@ -1,0 +1,16 @@
+Scenario: Different Hospitals [ex: H1,H2,..] with different distances between them for example between h1 and h2 there's 5km,...
+now we want to create a hospital management system that can do CRUD operations on the hospital:
+like registering the hospitals like H3 and its details like name,location,number of patients (and any more suggested) and then use csv as DB.
+Then there's another CRUD to link the hospitals in the graph and give them the distance between the hospitals and also use csv as DB.
+
+on run i want you to prompt the user to :
+1. View the registered Hospitals and their details
+2. Add a hospital and its details
+3. Update hospital details
+4.Delete hospital
+5. Link hospital to another hospital means you will input the distance between them
+6. View the graph of the hospitals and their edges (graph)
+7. Help (find things to put in help for user experience... )
+8. Exit
+
+Refer to this graph:
