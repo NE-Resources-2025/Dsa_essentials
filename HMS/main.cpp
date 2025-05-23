@@ -9,70 +9,81 @@
 
 using namespace std;
 
+// This struct holds information about a hospital
 struct Hospital {
-    string name;
-    string location;
-    int patients;
+    string name;      // Name of the hospital
+    string location;  // Where the hospital is located
+    int patients;     // Number of patients in the hospital
 
+    // Default constructor (sets patients to 0)
     Hospital() : patients(0) {}
+    // Constructor with parameters
     Hospital(string n, string l, int p) : name(n), location(l), patients(p) {}
 };
 
+// This struct represents a connection (link) between two hospitals
 struct Connection {
-    string hospital1;
-    string hospital2;
-    double distance;
+    string hospital1; // ID of the first hospital
+    string hospital2; // ID of the second hospital
+    double distance;  // Distance between the two hospitals
 
     Connection() : distance(0.0) {}
     Connection(string h1, string h2, double d) : hospital1(h1), hospital2(h2), distance(d) {}
 };
 
+// This class manages all hospital data and operations
 class HospitalManagementSystem {
 private:
-    map<string, Hospital> hospitals;
-    vector<Connection> connections;
-    const string HOSPITALS_FILE = "hospitals.csv";
-    const string CONNECTIONS_FILE = "hospital_connections.csv";
+    map<string, Hospital> hospitals; // Stores hospitals using their ID as the key
+    vector<Connection> connections;  // Stores all connections between hospitals
+    const string HOSPITALS_FILE = "hospitals.csv"; // File to save hospital data
+    const string CONNECTIONS_FILE = "hospital_connections.csv"; // File to save connections
 
 public:
+    // Constructor: loads data from files when the system starts
     HospitalManagementSystem() {
         loadData();
     }
 
+    // Loads both hospitals and connections from files
     void loadData() {
         loadHospitals();
         loadConnections();
     }
 
+    // Loads hospital data from the CSV file
     void loadHospitals() {
         ifstream file(HOSPITALS_FILE);
         if (!file.is_open()) {
-            return; // File doesn't exist yet
+            // If the file doesn't exist, just return (no error)
+            return;
         }
 
         string line;
-        getline(file, line); // Skip header
+        getline(file, line); // Skip the first line (header)
 
+        // Read each line (one hospital per line)
         while (getline(file, line)) {
-            if (line.empty()) continue;
+            if (line.empty()) continue; // Skip empty lines
 
             stringstream ss(line);
             string hospital_id, name, location, patients_str;
 
+            // Read each value separated by commas
             getline(ss, hospital_id, ',');
             getline(ss, name, ',');
             getline(ss, location, ',');
             getline(ss, patients_str, ',');
 
-            // Remove quotes if present
+            // Remove quotes from values if present
             hospital_id = removeQuotes(hospital_id);
             name = removeQuotes(name);
             location = removeQuotes(location);
             patients_str = removeQuotes(patients_str);
 
             try {
-                int patients = stoi(patients_str);
-                hospitals[hospital_id] = Hospital(name, location, patients);
+                int patients = stoi(patients_str); // Convert string to int
+                hospitals[hospital_id] = Hospital(name, location, patients); // Add to map
             } catch (const exception& e) {
                 cout << "Error parsing hospital data: " << line << endl;
             }
@@ -80,15 +91,18 @@ public:
         file.close();
     }
 
+    // Loads connections (links) between hospitals from file
     void loadConnections() {
         ifstream file(CONNECTIONS_FILE);
         if (!file.is_open()) {
-            return; // File doesn't exist yet
+            // If the file doesn't exist, just return
+            return;
         }
 
         string line;
-        getline(file, line); // Skip header
+        getline(file, line); // Skip the header
 
+        // Read each connection line
         while (getline(file, line)) {
             if (line.empty()) continue;
 
@@ -105,7 +119,7 @@ public:
             distance_str = removeQuotes(distance_str);
 
             try {
-                double distance = stod(distance_str);
+                double distance = stod(distance_str); // Convert string to double
                 connections.push_back(Connection(hospital1, hospital2, distance));
             } catch (const exception& e) {
                 cout << "Error parsing connection data: " << line << endl;
@@ -114,6 +128,7 @@ public:
         file.close();
     }
 
+    // Helper function to remove quotes from a string (if present)
     string removeQuotes(string str) {
         if (str.length() >= 2 && str[0] == '"' && str[str.length()-1] == '"') {
             return str.substr(1, str.length()-2);
@@ -121,6 +136,7 @@ public:
         return str;
     }
 
+    // Saves all hospitals to the CSV file
     void saveHospitals() {
         ofstream file(HOSPITALS_FILE);
         if (!file.is_open()) {
@@ -128,7 +144,9 @@ public:
             return;
         }
 
+        // Write header
         file << "hospital_id,name,location,patients" << endl;
+        // Write each hospital's data
         for (const auto& pair : hospitals) {
             file << pair.first << ","
                  << "\"" << pair.second.name << "\","
@@ -139,6 +157,7 @@ public:
         cout << "Hospitals data saved successfully!" << endl;
     }
 
+    // Saves all connections to the CSV file
     void saveConnections() {
         ofstream file(CONNECTIONS_FILE);
         if (!file.is_open()) {
@@ -146,7 +165,9 @@ public:
             return;
         }
 
+        // Write header
         file << "hospital1,hospital2,distance" << endl;
+        // Write each connection
         for (const auto& conn : connections) {
             file << conn.hospital1 << "," << conn.hospital2 << "," << conn.distance << endl;
         }
@@ -154,6 +175,7 @@ public:
         cout << "Hospital connections saved successfully!" << endl;
     }
 
+    // Shows all registered hospitals and their details
     void viewHospitals() {
         if (hospitals.empty()) {
             cout << "\nNo hospitals registered yet." << endl;
@@ -164,6 +186,7 @@ public:
         cout << "REGISTERED HOSPITALS" << endl;
         cout << string(60, '=') << endl;
 
+        // Print details for each hospital
         for (const auto& pair : hospitals) {
             cout << "Hospital ID: " << pair.first << endl;
             cout << "Name: " << pair.second.name << endl;
@@ -173,6 +196,7 @@ public:
         }
     }
 
+    // Lets the user add a new hospital
     void addHospital() {
         cout << "\n--- ADD NEW HOSPITAL ---" << endl;
 
@@ -183,9 +207,10 @@ public:
         cin >> hospital_id;
         cin.ignore(); // Clear the input buffer
 
-        // Convert to uppercase
+        // Make sure the ID is uppercase (for consistency)
         transform(hospital_id.begin(), hospital_id.end(), hospital_id.begin(), ::toupper);
 
+        // Check if hospital already exists
         if (hospitals.find(hospital_id) != hospitals.end()) {
             cout << "Hospital " << hospital_id << " already exists!" << endl;
             return;
@@ -200,6 +225,7 @@ public:
         cout << "Enter Number of Patients: ";
         cin >> patients;
 
+        // If user enters invalid number, set to 0
         if (cin.fail()) {
             cin.clear();
             cin.ignore(10000, '\n');
@@ -207,11 +233,13 @@ public:
             patients = 0;
         }
 
+        // Add new hospital to the map
         hospitals[hospital_id] = Hospital(name, location, patients);
         saveHospitals();
         cout << "Hospital " << hospital_id << " added successfully!" << endl;
     }
 
+    // Lets the user update details of an existing hospital
     void updateHospital() {
         if (hospitals.empty()) {
             cout << "\nNo hospitals to update." << endl;
@@ -226,8 +254,10 @@ public:
         cin >> hospital_id;
         cin.ignore();
 
+        // Make ID uppercase
         transform(hospital_id.begin(), hospital_id.end(), hospital_id.begin(), ::toupper);
 
+        // Check if hospital exists
         if (hospitals.find(hospital_id) == hospitals.end()) {
             cout << "Hospital " << hospital_id << " not found!" << endl;
             return;
@@ -235,6 +265,7 @@ public:
 
         Hospital& hospital = hospitals[hospital_id];
 
+        // Show current details
         cout << "\nCurrent details for " << hospital_id << ":" << endl;
         cout << "Name: " << hospital.name << endl;
         cout << "Location: " << hospital.location << endl;
@@ -270,6 +301,7 @@ public:
         cout << "Hospital " << hospital_id << " updated successfully!" << endl;
     }
 
+    // Lets the user delete a hospital and its connections
     void deleteHospital() {
         if (hospitals.empty()) {
             cout << "\nNo hospitals to delete." << endl;
@@ -284,8 +316,10 @@ public:
         cin >> hospital_id;
         cin.ignore();
 
+        // Make ID uppercase
         transform(hospital_id.begin(), hospital_id.end(), hospital_id.begin(), ::toupper);
 
+        // Check if hospital exists
         if (hospitals.find(hospital_id) == hospitals.end()) {
             cout << "Hospital " << hospital_id << " not found!" << endl;
             return;
@@ -297,7 +331,7 @@ public:
         cin.ignore();
 
         if (confirm == 'y' || confirm == 'Y') {
-            // Remove hospital
+            // Remove hospital from map
             hospitals.erase(hospital_id);
 
             // Remove all connections involving this hospital
@@ -317,6 +351,7 @@ public:
         }
     }
 
+    // Lets the user create a link (connection) between two hospitals
     void linkHospitals() {
         if (hospitals.size() < 2) {
             cout << "\nNeed at least 2 hospitals to create a link." << endl;
@@ -337,6 +372,7 @@ public:
         cin >> hospital2;
         transform(hospital2.begin(), hospital2.end(), hospital2.begin(), ::toupper);
 
+        // Check if both hospitals exist
         if (hospitals.find(hospital1) == hospitals.end()) {
             cout << "Hospital " << hospital1 << " not found!" << endl;
             return;
@@ -352,7 +388,7 @@ public:
             return;
         }
 
-        // Check if link already exists
+        // Check if this link already exists (in either direction)
         bool linkExists = false;
         for (const auto& conn : connections) {
             if ((conn.hospital1 == hospital1 && conn.hospital2 == hospital2) ||
@@ -370,6 +406,7 @@ public:
         cout << "Enter distance in km: ";
         cin >> distance;
 
+        // Check for valid distance
         if (cin.fail() || distance <= 0) {
             cin.clear();
             cin.ignore(10000, '\n');
@@ -377,12 +414,14 @@ public:
             return;
         }
 
+        // Add the new connection
         connections.push_back(Connection(hospital1, hospital2, distance));
         saveConnections();
         cout << "Successfully linked " << hospital1 << " and " << hospital2
              << " with distance " << distance << " km!" << endl;
     }
 
+    // Shows all hospitals and their connections as a simple graph
     void viewGraph() {
         if (hospitals.empty()) {
             cout << "\nNo hospitals to display." << endl;
@@ -393,11 +432,13 @@ public:
         cout << "HOSPITAL NETWORK GRAPH" << endl;
         cout << string(50, '=') << endl;
 
+        // List all hospitals
         cout << "Hospitals:" << endl;
         for (const auto& pair : hospitals) {
             cout << "  " << pair.first << ": " << pair.second.name << endl;
         }
 
+        // List all connections
         cout << "\nConnections:" << endl;
         if (connections.empty()) {
             cout << "  No connections established yet." << endl;
@@ -408,24 +449,25 @@ public:
             }
         }
 
-        // ASCII Art representation of the graph
+        // Show a simple ASCII art graph
         cout << "\nGraph Visualization:" << endl;
         cout << string(50, '-') << endl;
 
         if (!connections.empty()) {
-            // Simple ASCII representation
+            // Draw each connection as a line
             for (const auto& conn : connections) {
                 cout << conn.hospital1 << " ----(" << conn.distance << "km)---- "
                      << conn.hospital2 << endl;
             }
         } else {
-            // Show isolated hospitals
+            // If no connections, just show each hospital
             for (const auto& pair : hospitals) {
                 cout << "(" << pair.first << ")" << endl;
             }
         }
     }
 
+    // Adds some sample hospitals and connections (for first-time users)
     void initializeSampleData() {
         cout << "Initializing sample data..." << endl;
 
@@ -442,6 +484,7 @@ public:
         cout << "Sample data initialized successfully!" << endl;
     }
 
+    // Clears the screen (works on Windows and Linux/Mac)
     void clearScreen() {
         #ifdef _WIN32
             system("cls");
@@ -450,14 +493,16 @@ public:
         #endif
     }
 
+    // Pauses the screen until user presses Enter
     void pauseScreen() {
         cout << "\nPress Enter to continue...";
         cin.ignore();
         cin.get();
     }
 
+    // The main menu loop for the program
     void run() {
-        // Check if this is first run and offer to initialize sample data
+        // If there are no hospitals, ask user if they want sample data
         if (hospitals.empty()) {
             cout << "Welcome to Hospital Management System!" << endl;
             char init_sample;
@@ -472,6 +517,7 @@ public:
 
         int choice;
         while (true) {
+            // Show menu options
             cout << "\n" << string(50, '=') << endl;
             cout << "HOSPITAL MANAGEMENT SYSTEM" << endl;
             cout << string(50, '=') << endl;
@@ -488,6 +534,7 @@ public:
             cin >> choice;
             cin.ignore(); // Clear input buffer
 
+            // Do the action based on user choice
             switch (choice) {
                 case 1:
                     viewHospitals();
@@ -514,13 +561,14 @@ public:
                     cout << "Invalid choice. Please enter a number between 1-7." << endl;
             }
 
-            pauseScreen();
+            pauseScreen(); // Wait for user before showing menu again
         }
     }
 };
 
+// The main function: program starts here
 int main() {
-    HospitalManagementSystem hms;
-    hms.run();
+    HospitalManagementSystem hms; // Create the system object
+    hms.run(); // Start the menu loop
     return 0;
 }
